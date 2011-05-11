@@ -1,0 +1,16 @@
+Index: common.inc
+===================================================================
+--- common.inc	(revision 4535)
++++ common.inc	(working copy)
+@@ -144,6 +144,11 @@
+   // ends HTTP headers prematurely on some PHP versions.
+   static $stored_headers = array();
+ 
++  // This line fixes strange characters in 403/404 output when proxied behind
++  // certain reverse-proxy engines, e.g. nginx.
++  // See: http://drupal.org/node/355170
++  $header = str_replace('HTTP/1.1', $_SERVER["SERVER_PROTOCOL"], $header);
++
+   if (strlen($header)) {
+     header($header);
+     $stored_headers[] = $header;
